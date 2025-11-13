@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simulation – Mini‑usine d’huile d’olive</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Simulation – Mini‑usine d’huile d’olive</h1>
+    <p class="subtitle">Entrez les intrants et obtenez les résultats analytiques (coûts, marge, SR). Crédit des sous‑produits inclus.</p>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>Intrants</h2>
+      <div class="grid">
+        <div class="field"><label>Olives à traiter (kg)</label><input id="olivesKg" type="number" step="1" value="1000"></div>
+        <div class="field"><label>Prix des olives (MAD/kg)</label><input id="olivePricePerKg" type="number" step="0.01" value="4.0"></div>
+        <div class="field"><label>Huile (% masse)</label><input id="oilYieldPct" type="number" step="0.1" value="20"></div>
+        <div class="field"><label>Sous-produit vendable (%)</label><input id="wasteSellablePct" type="number" step="0.1" value="35"></div>
+        <div class="field"><label>Pertes humidité (%)</label><input id="moistureLossPct" type="number" step="0.1" value="5"></div>
+        <div class="field"><label>Prix de l’huile (MAD/L)</label><input id="oilPricePerL" type="number" step="0.1" value="90"></div>
+        <div class="field"><label>Prix sous-produit (MAD/kg)</label><input id="wastePricePerKg" type="number" step="0.01" value="0.8"></div>
+        <div class="field"><label>Densité huile (kg/L)</label><input id="oilDensityKgPerL" type="number" step="0.001" value="0.916"></div>
+        <div class="field"><label>Contenance bouteille (L)</label><input id="bottleSizeL" type="number" step="0.05" value="0.75"></div>
+        <div class="field"><label>Coût emballage (MAD/bouteille)</label><input id="packagingUnitCost" type="number" step="0.1" value="2.5"></div>
+        <div class="field"><label>Heures de travail (h)</label><input id="laborHours" type="number" step="1" value="16"></div>
+        <div class="field"><label>Taux horaire (MAD/h)</label><input id="wagePerHour" type="number" step="0.1" value="25"></div>
+        <div class="field"><label>Énergie (kWh)</label><input id="energyKwh" type="number" step="1" value="180"></div>
+        <div class="field"><label>Prix énergie (MAD/kWh)</label><input id="energyPricePerKwh" type="number" step="0.01" value="1.2"></div>
+        <div class="field"><label>Autres variables (MAD/kg olives)</label><input id="varOverheadPerKg" type="number" step="0.01" value="0.6"></div>
+        <div class="field"><label>Coûts fixes (MAD/période)</label><input id="fixedCosts" type="number" step="1" value="5000"></div>
+        <div class="field"><label>Capacité (kg/h)</label><input id="capacityKgPerHour" type="number" step="1" value="120"></div>
+        <div class="field"><label>Heures de marche (h)</label><input id="runtimeHours" type="number" step="1" value="10"></div>
+      </div>
+      <div class="actions">
+        <button id="resetBtn">Réinitialiser</button>
+        <button id="exportBtn">Exporter les paramètres (JSON)</button>
+        <input id="importFile" type="file" accept="application/json" style="display:none;">
+        <button id="importBtn">Importer des paramètres</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Résultats analytiques</h2>
+      <div class="kpis" id="kpis"></div>
+      <div class="notes">
+        <details>
+          <summary>Hypothèses & formules</summary>
+          <ul>
+            <li>Crédit des sous‑produits : le CA des sous‑produits réduit le coût variable unitaire de l’huile.</li>
+            <li>Densité par défaut : 0,916 kg/L (modifiable).</li>
+            <li>Bouteilles arrondies à l’entier supérieur.</li>
+            <li>SR (L) = Coûts fixes ÷ [Prix/L − (CV/L − Crédit sous‑produit/L)].</li>
+          </ul>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <small>© Simulation pédagogique – Mini‑usine d’huile d’olive</small>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
