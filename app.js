@@ -33,27 +33,11 @@ fields.forEach(k=>{
 });
 
 $("resetBtn").addEventListener("click", ()=>{
-  Object.assign(params, {
-    olivesKg: 1000,
-    olivePricePerKg: 4.0,
-    oilYieldPct: 20,
-    wasteSellablePct: 35,
-    moistureLossPct: 5,
-    oilPricePerL: 90,
-    wastePricePerKg: 0.8,
-    oilDensityKgPerL: 0.916,
-    bottleSizeL: 0.75,
-    packagingUnitCost: 2.5,
-    laborHours: 16,
-    wagePerHour: 25,
-    energyKwh: 180,
-    energyPricePerKwh: 1.2,
-    varOverheadPerKg: 0.6,
-    fixedCosts: 5000,
-    capacityKgPerHour: 120,
-    runtimeHours: 10,
+  // Mettre tous les paramètres à 0
+  fields.forEach(k => {
+    params[k] = 0;
+    $(k).value = 0;     // ou "" si tu préfères des champs vides
   });
-  fields.forEach(k=>$(k).value = params[k]);
   render();
 });
 
