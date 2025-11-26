@@ -1,69 +1,436 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Simulation – Mini‑usine d’huile d’olive</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Simulation – Coûts complets Huile d’olive</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 1.5rem;
+      background: #f5f5f5;
+    }
+    h1, h2, h3 {
+      margin-top: 0;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .card {
+      background: #fafafa;
+      border-radius: 8px;
+      padding: 1rem;
+      border: 1px solid #e0e0e0;
+    }
+    label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 0.4rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 0.9rem;
+      box-sizing: border-box;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: #007bff;
+      color: white;
+      margin-top: 0.5rem;
+    }
+    .btn:active {
+      transform: scale(0.98);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 0.4rem 0.6rem;
+      text-align: right;
+    }
+    th:first-child, td:first-child {
+      text-align: left;
+    }
+    th {
+      background: #f0f0f0;
+    }
+    .result {
+      font-weight: 600;
+    }
+    .small {
+      font-size: 0.85rem;
+      color: #555;
+    }
+    .tag {
+      display: inline-block;
+      font-size: 0.8rem;
+      padding: 0.1rem 0.4rem;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #0369a1;
+      margin-left: 0.4rem;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Simulation – Mini‑usine d’huile d’olive</h1>
-    <p class="subtitle">Entrez les intrants et obtenez les résultats analytiques (coûts, marge, SR). Crédit des sous‑produits inclus.</p>
-  </header>
+  <div class="container">
+    <h1>Simulation – Coûts complets (Huile d’olive)</h1>
+    <p class="small">
+      Cas pédagogique : unité de production d’huile d’olive, méthode des <strong>coûts complets par sections</strong>.<br>
+      Les valeurs sont pré-remplies avec les données du cas, mais vous pouvez les modifier.
+    </p>
 
-  <main>
-    <section class="panel">
-      <h2>Intrants</h2>
-      <div class="grid">
-        <div class="field"><label>Olives à traiter (kg)</label><input id="olivesKg" type="number" step="1" value="1000"></div>
-        <div class="field"><label>Prix des olives (MAD/kg)</label><input id="olivePricePerKg" type="number" step="0.01" value="4.0"></div>
-        <div class="field"><label>Huile (% masse)</label><input id="oilYieldPct" type="number" step="0.1" value="20"></div>
-        <div class="field"><label>Sous-produit vendable (%)</label><input id="wasteSellablePct" type="number" step="0.1" value="35"></div>
-        <div class="field"><label>Pertes humidité (%)</label><input id="moistureLossPct" type="number" step="0.1" value="5"></div>
-        <div class="field"><label>Prix de l’huile (MAD/L)</label><input id="oilPricePerL" type="number" step="0.1" value="90"></div>
-        <div class="field"><label>Prix sous-produit (MAD/kg)</label><input id="wastePricePerKg" type="number" step="0.01" value="0.8"></div>
-        <div class="field"><label>Densité huile (kg/L)</label><input id="oilDensityKgPerL" type="number" step="0.001" value="0.916"></div>
-        <div class="field"><label>Contenance bouteille (L)</label><input id="bottleSizeL" type="number" step="0.05" value="0.75"></div>
-        <div class="field"><label>Coût emballage (MAD/bouteille)</label><input id="packagingUnitCost" type="number" step="0.1" value="2.5"></div>
-        <div class="field"><label>Heures de travail (h)</label><input id="laborHours" type="number" step="1" value="16"></div>
-        <div class="field"><label>Taux horaire (MAD/h)</label><input id="wagePerHour" type="number" step="0.1" value="25"></div>
-        <div class="field"><label>Énergie (kWh)</label><input id="energyKwh" type="number" step="1" value="180"></div>
-        <div class="field"><label>Prix énergie (MAD/kWh)</label><input id="energyPricePerKwh" type="number" step="0.01" value="1.2"></div>
-        <div class="field"><label>Autres variables (MAD/kg olives)</label><input id="varOverheadPerKg" type="number" step="0.01" value="0.6"></div>
-        <div class="field"><label>Coûts fixes (MAD/période)</label><input id="fixedCosts" type="number" step="1" value="5000"></div>
-        <div class="field"><label>Capacité (kg/h)</label><input id="capacityKgPerHour" type="number" step="1" value="120"></div>
-        <div class="field"><label>Heures de marche (h)</label><input id="runtimeHours" type="number" step="1" value="10"></div>
+    <!-- Données de base -->
+    <div class="grid">
+      <div class="card">
+        <h2>Données physiques</h2>
+        <label>Quantité d’olives (kg)</label>
+        <input type="number" id="kgOlives" value="2400" step="0.01" />
+
+        <label>Prix d’achat par kg (DH)</label>
+        <input type="number" id="prixKg" value="2.8" step="0.01" />
+
+        <label>Production d’huile (litres)</label>
+        <input type="number" id="litres" value="150" step="0.01" />
       </div>
-      <div class="actions">
-        <button id="resetBtn">Réinitialiser</button>
-        <button id="exportBtn">Exporter les paramètres (JSON)</button>
-        <input id="importFile" type="file" accept="application/json" style="display:none;">
-        <button id="importBtn">Importer des paramètres</button>
+
+      <div class="card">
+        <h2>Charges directes</h2>
+        <label>Salaires des ouvriers de fabrication (MOD) – DH</label>
+        <input type="number" id="mod" value="3400" step="0.01" />
+
+        <label>Consommables de conditionnement – DH</label>
+        <input type="number" id="conditionnement" value="1200" step="0.01" />
       </div>
-    </section>
 
-    <section class="panel">
-      <h2>Résultats analytiques</h2>
-      <div class="kpis" id="kpis"></div>
-      <div class="notes">
-        <details>
-          <summary>Hypothèses & formules</summary>
-          <ul>
-            <li>Crédit des sous‑produits : le CA des sous‑produits réduit le coût variable unitaire de l’huile.</li>
-            <li>Densité par défaut : 0,916 kg/L (modifiable).</li>
-            <li>Bouteilles arrondies à l’entier supérieur.</li>
-            <li>SR (L) = Coûts fixes ÷ [Prix/L − (CV/L − Crédit sous‑produit/L)].</li>
-          </ul>
-        </details>
+      <div class="card">
+        <h2>Charges indirectes (CG)</h2>
+        <label>Salaires du magasinier – DH</label>
+        <input type="number" id="magasinier" value="800" step="0.01" />
+
+        <label>Indemnité responsable d’atelier – DH</label>
+        <input type="number" id="responsable" value="900" step="0.01" />
+
+        <label>Loyer de l’atelier – DH</label>
+        <input type="number" id="loyer" value="2500" step="0.01" />
+
+        <label>Énergie électrique (machines) – DH</label>
+        <input type="number" id="energie" value="960" step="0.01" />
+
+        <label>Entretien des machines – DH</label>
+        <input type="number" id="entretien" value="600" step="0.01" />
+
+        <label>Assurances + divers – DH</label>
+        <input type="number" id="assurances" value="350" step="0.01" />
       </div>
-    </section>
-  </main>
+    </div>
 
-  <footer>
-    <small>© Simulation pédagogique – Mini‑usine d’huile d’olive</small>
-  </footer>
+    <button class="btn" onclick="calculer()">Calculer les coûts complets</button>
 
-  <script src="app.js"></script>
+    <!-- Résultats -->
+    <div id="resultats" style="margin-top: 1.5rem; display:none;">
+      <h2>1. Répartition primaire des charges indirectes</h2>
+      <p class="small">
+        Clés intégrées : Responsable (40 % Appro / 60 % Prod) • Loyer (30 % Appro / 70 % Prod) • Assurances (30 % Appro / 70 % Prod) •
+        Énergie : 100 % Production • Entretien : section auxiliaire.
+      </p>
+
+      <div id="tablePrimaire"></div>
+
+      <h2>2. Répartition secondaire de la section Entretien</h2>
+      <p class="small">
+        Clé d’imputation : Entretien → 20 % Approvisionnement, 80 % Production.
+      </p>
+      <div id="tableSecondaire"></div>
+
+      <h2>3. Coût des unités d’œuvre</h2>
+      <div id="tableUO"></div>
+
+      <h2>4. Coût d’achat, coût de production, coût de revient</h2>
+      <div id="tableCouts"></div>
+    </div>
+  </div>
+
+  <script>
+    function format2(x) {
+      return Number(x).toFixed(2);
+    }
+
+    function calculer() {
+      // Récupération des données
+      const kgOlives = parseFloat(document.getElementById('kgOlives').value) || 0;
+      const prixKg   = parseFloat(document.getElementById('prixKg').value) || 0;
+      const litres   = parseFloat(document.getElementById('litres').value) || 1; // éviter /0
+
+      const mod  = parseFloat(document.getElementById('mod').value) || 0;
+      const conditionnement = parseFloat(document.getElementById('conditionnement').value) || 0;
+
+      const magasinier  = parseFloat(document.getElementById('magasinier').value) || 0;
+      const responsable = parseFloat(document.getElementById('responsable').value) || 0;
+      const loyer       = parseFloat(document.getElementById('loyer').value) || 0;
+      const energie     = parseFloat(document.getElementById('energie').value) || 0;
+      const entretien   = parseFloat(document.getElementById('entretien').value) || 0;
+      const assurances  = parseFloat(document.getElementById('assurances').value) || 0;
+
+      // Achats de MP
+      const achatsMP = kgOlives * prixKg;
+
+      // --- RÉPARTITION PRIMAIRE ---
+
+      // Responsable atelier : 40 % Appro / 60 % Prod
+      const appro_responsable = responsable * 0.4;
+      const prod_responsable  = responsable * 0.6;
+
+      // Loyer : 30 % Appro / 70 % Prod
+      const appro_loyer = loyer * 0.3;
+      const prod_loyer  = loyer * 0.7;
+
+      // Assurances : 30 % Appro / 70 % Prod
+      const appro_assur = assurances * 0.3;
+      const prod_assur  = assurances * 0.7;
+
+      // Énergie : 100 % Production
+      const prod_energie = energie;
+
+      // Entretien des machines : section Entretien (auxiliaire)
+      const entretien_entretien = entretien;
+
+      // Magasinier : 100 % Approvisionnement
+      const appro_magasinier = magasinier;
+
+      // Totaux après répartition primaire
+      const entret_primaire = entretien_entretien;
+      const appro_primaire  = appro_magasinier + appro_responsable + appro_loyer + appro_assur;
+      const prod_primaire   = prod_responsable + prod_loyer + prod_energie + prod_assur;
+
+      const total_indir = magasinier + responsable + loyer + energie + entretien + assurances;
+
+      // --- RÉPARTITION SECONDAIRE (Entretien) ---
+      const appro_from_entretien = entret_primaire * 0.2;
+      const prod_from_entretien  = entret_primaire * 0.8;
+
+      const appro_def = appro_primaire + appro_from_entretien;
+      const prod_def  = prod_primaire + prod_from_entretien;
+
+      // --- COÛT DES UO ---
+      const uo_appro = appro_def / kgOlives;
+      const uo_prod  = prod_def / litres;
+
+      // --- COÛT D’ACHAT ---
+      const cout_achat_total = achatsMP + appro_def;
+      const cout_achat_kg = cout_achat_total / kgOlives;
+      const kg_par_litre = kgOlives / litres;
+      const cout_achat_par_litre = cout_achat_kg * kg_par_litre;
+
+      // --- COÛT DE PRODUCTION ---
+      const cout_prod_total = achatsMP + appro_def + mod + prod_def;
+      const cout_prod_litre = cout_prod_total / litres;
+
+      // --- COÛT DE REVIENT ---
+      const cout_revient_total = cout_prod_total + conditionnement;
+      const cout_revient_litre = cout_revient_total / litres;
+      const cout_cond_litre = conditionnement / litres;
+
+      // --- Affichage résultats ---
+
+      document.getElementById('resultats').style.display = 'block';
+
+      // Tableau répartition primaire
+      const tablePrimaire = `
+        <table>
+          <tr>
+            <th>Nature de charge</th>
+            <th>Entretien</th>
+            <th>Approvisionnement</th>
+            <th>Production</th>
+            <th>Total</th>
+          </tr>
+          <tr>
+            <td>Salaires du magasinier</td>
+            <td>-</td>
+            <td>${format2(appro_magasinier)}</td>
+            <td>-</td>
+            <td>${format2(magasinier)}</td>
+          </tr>
+          <tr>
+            <td>Indemnité responsable atelier (40 % / 60 %)</td>
+            <td>-</td>
+            <td>${format2(appro_responsable)}</td>
+            <td>${format2(prod_responsable)}</td>
+            <td>${format2(responsable)}</td>
+          </tr>
+          <tr>
+            <td>Loyer (30 % / 70 %)</td>
+            <td>-</td>
+            <td>${format2(appro_loyer)}</td>
+            <td>${format2(prod_loyer)}</td>
+            <td>${format2(loyer)}</td>
+          </tr>
+          <tr>
+            <td>Énergie (100 % Production)</td>
+            <td>-</td>
+            <td>-</td>
+            <td>${format2(prod_energie)}</td>
+            <td>${format2(energie)}</td>
+          </tr>
+          <tr>
+            <td>Entretien des machines</td>
+            <td>${format2(entretien_entretien)}</td>
+            <td>-</td>
+            <td>-</td>
+            <td>${format2(entretien)}</td>
+          </tr>
+          <tr>
+            <td>Assurances + divers (30 % / 70 %)</td>
+            <td>-</td>
+            <td>${format2(appro_assur)}</td>
+            <td>${format2(prod_assur)}</td>
+            <td>${format2(assurances)}</td>
+          </tr>
+          <tr class="result">
+            <td>Total répartition primaire</td>
+            <td>${format2(entret_primaire)}</td>
+            <td>${format2(appro_primaire)}</td>
+            <td>${format2(prod_primaire)}</td>
+            <td>${format2(total_indir)}</td>
+          </tr>
+        </table>
+      `;
+      document.getElementById('tablePrimaire').innerHTML = tablePrimaire;
+
+      // Tableau répartition secondaire
+      const tableSecondaire = `
+        <table>
+          <tr>
+            <th>Section</th>
+            <th>Après répartition primaire (DH)</th>
+            <th>Part d'Entretien (DH)</th>
+            <th>Total définitif (DH)</th>
+          </tr>
+          <tr>
+            <td>Approvisionnement</td>
+            <td>${format2(appro_primaire)}</td>
+            <td>${format2(appro_from_entretien)}</td>
+            <td class="result">${format2(appro_def)}</td>
+          </tr>
+          <tr>
+            <td>Production</td>
+            <td>${format2(prod_primaire)}</td>
+            <td>${format2(prod_from_entretien)}</td>
+            <td class="result">${format2(prod_def)}</td>
+          </tr>
+        </table>
+      `;
+      document.getElementById('tableSecondaire').innerHTML = tableSecondaire;
+
+      // Tableau UO
+      const tableUO = `
+        <table>
+          <tr>
+            <th>Section</th>
+            <th>Total définitif (DH)</th>
+            <th>Volume d'UO</th>
+            <th>Coût de l'UO</th>
+          </tr>
+          <tr>
+            <td>Approvisionnement</td>
+            <td>${format2(appro_def)}</td>
+            <td>${format2(kgOlives)} kg</td>
+            <td class="result">${format2(uo_appro)} DH / kg</td>
+          </tr>
+          <tr>
+            <td>Production</td>
+            <td>${format2(prod_def)}</td>
+            <td>${format2(litres)} litres</td>
+            <td class="result">${format2(uo_prod)} DH / litre</td>
+          </tr>
+        </table>
+      `;
+      document.getElementById('tableUO').innerHTML = tableUO;
+
+      // Tableau coûts d'achat / prod / revient
+      const tableCouts = `
+        <table>
+          <tr>
+            <th>Élément</th>
+            <th>Total (DH)</th>
+            <th>Par litre (DH)</th>
+          </tr>
+          <tr>
+            <td>Achats d'olives (MP)</td>
+            <td>${format2(achatsMP)}</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Section Approvisionnement</td>
+            <td>${format2(appro_def)}</td>
+            <td>-</td>
+          </tr>
+          <tr class="result">
+            <td><strong>Coût d'achat des olives</strong></td>
+            <td>${format2(cout_achat_total)}</td>
+            <td>${format2(cout_achat_par_litre)}</td>
+          </tr>
+          <tr>
+            <td>Main-d'œuvre directe fabrication (MOD)</td>
+            <td>${format2(mod)}</td>
+            <td>${format2(mod / litres)}</td>
+          </tr>
+          <tr>
+            <td>Section Production</td>
+            <td>${format2(prod_def)}</td>
+            <td>${format2(prod_def / litres)}</td>
+          </tr>
+          <tr class="result">
+            <td><strong>Coût de production</strong></td>
+            <td>${format2(cout_prod_total)}</td>
+            <td>${format2(cout_prod_litre)}</td>
+          </tr>
+          <tr>
+            <td>Consommables de conditionnement</td>
+            <td>${format2(conditionnement)}</td>
+            <td>${format2(cout_cond_litre)}</td>
+          </tr>
+          <tr class="result">
+            <td><strong>Coût de revient</strong></td>
+            <td>${format2(cout_revient_total)}</td>
+            <td>${format2(cout_revient_litre)}</td>
+          </tr>
+        </table>
+        <p class="small">
+          Vérification globale : total des charges (CG + charges directes) = ${format2(
+            achatsMP + mod + magasinier + responsable + loyer + energie + entretien + assurances + conditionnement
+          )} DH.
+        </p>
+      `;
+      document.getElementById('tableCouts').innerHTML = tableCouts;
+    }
+  </script>
 </body>
 </html>
