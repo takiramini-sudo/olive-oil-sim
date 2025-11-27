@@ -432,5 +432,14 @@
       document.getElementById('tableCouts').innerHTML = tableCouts;
     }
   </script>
+  <script>
+  (function () {
+    const CORRECT_PASSWORD = "CAE2025";
+    const saisie = prompt("Ce site est réservé aux stagiaires. Veuillez saisir le mot de passe :");
+    if (saisie !== CORRECT_PASSWORD) {
+      document.body.innerHTML = "<h2 style='text-align:center; margin-top:40px;'>Accès refusé</h2>";
+    }
+  })();
+</script>
 </body>
 </html>
